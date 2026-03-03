@@ -1,0 +1,89 @@
+name: 🗄️ Actualización de Base de Datos
+description: Propón o documenta un cambio en el esquema o datos de la base de datos.
+title: "[DB] "
+labels: ["database", "migration"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa esta plantilla para proponer migraciones, cambios de esquema, seeds o cualquier modificación en la base de datos.
+
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Tipo de cambio
+      description: ¿Qué tipo de cambio en la base de datos se propone?
+      options:
+        - Nueva tabla / colección
+        - Modificación de tabla / colección existente
+        - Eliminación de tabla / colección
+        - Nuevo índice
+        - Seed / Datos iniciales
+        - Migración de datos
+        - Otro
+    validations:
+      required: true
+
+  - type: input
+    id: table
+    attributes:
+      label: Tabla / Colección afectada
+      description: Nombre de la tabla o colección involucrada.
+      placeholder: "users / orders / ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivación
+      description: ¿Por qué es necesario este cambio? ¿Qué problema resuelve?
+      placeholder: "Se necesita almacenar... / El campo X ya no se utiliza..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: schema_change
+    attributes:
+      label: Descripción del cambio de esquema
+      description: Describe los campos, tipos de datos, relaciones o constraints que se añaden, modifican o eliminan.
+      render: sql
+      placeholder: |
+        ALTER TABLE users ADD COLUMN phone VARCHAR(20);
+        -- o en MongoDB:
+        -- Añadir campo "phone" (string) al documento User
+    validations:
+      required: true
+
+  - type: textarea
+    id: migration_script
+    attributes:
+      label: Script de migración (si aplica)
+      description: Pega aquí el script SQL o código de migración propuesto.
+      render: sql
+
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: ¿Es un cambio destructivo (breaking change)?
+      description: ¿Este cambio puede romper funcionalidad existente o requiere coordinación especial?
+      options:
+        - "Sí"
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: rollback
+    attributes:
+      label: Plan de rollback
+      description: ¿Cómo se puede revertir este cambio si algo falla?
+      placeholder: "Para revertir, ejecutar..."
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Información adicional
+      description: Diagramas ER, capturas, links a documentación relacionada, etc.

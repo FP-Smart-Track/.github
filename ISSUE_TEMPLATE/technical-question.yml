@@ -1,0 +1,56 @@
+name: ❓ Pregunta Técnica
+description: Haz una pregunta técnica sobre el proyecto, arquitectura o implementación.
+title: "[QUESTION] "
+labels: ["question"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Antes de abrir esta issue, asegúrate de haber revisado la documentación existente y las issues anteriores. ¡Gracias!
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área de la pregunta
+      description: ¿A qué área pertenece tu pregunta?
+      options:
+        - Arquitectura
+        - API / Backend
+        - Base de Datos
+        - Frontend
+        - Infraestructura / DevOps
+        - Seguridad
+        - Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Pregunta
+      description: Formula tu pregunta de forma clara y concisa.
+      placeholder: "¿Cómo funciona...? / ¿Por qué se hace...? / ¿Cuál es la diferencia entre...?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: Proporciona contexto adicional que ayude a entender tu pregunta (código, configuración, etc.).
+      render: shell
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: ¿Qué has intentado o investigado?
+      description: Describe qué has buscado o probado antes de abrir esta issue.
+      placeholder: "He revisado la documentación en... / He intentado..."
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Información adicional
+      description: Cualquier otra información relevante.

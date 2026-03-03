@@ -1,0 +1,71 @@
+name: 🚀 Propuesta de API
+description: Propón un nuevo endpoint, cambio de contrato o mejora en la API.
+title: "[API] "
+labels: ["api", "proposal"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomarte el tiempo de proponer una mejora en la API. Por favor, rellena los campos a continuación con el mayor detalle posible.
+
+  - type: input
+    id: endpoint
+    attributes:
+      label: Endpoint / Recurso afectado
+      description: Indica el endpoint o recurso sobre el que se propone el cambio (ej. `GET /api/v1/users`).
+      placeholder: "GET /api/v1/..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: method
+    attributes:
+      label: Método HTTP
+      description: ¿Qué método HTTP se ve afectado o se propone?
+      options:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivación / Problema que resuelve
+      description: Describe el problema actual o la necesidad que motiva esta propuesta.
+      placeholder: "Actualmente no existe un endpoint para..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta detallada
+      description: Describe el contrato propuesto (request body, parámetros, response, códigos de estado, etc.).
+      render: json
+      placeholder: |
+        {
+          "request": {},
+          "response": {}
+        }
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
+      description: ¿Has pensado en otras soluciones? Descríbelas brevemente.
+      placeholder: "Se consideró... pero se descartó porque..."
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Información adicional
+      description: Capturas, diagramas, links a documentación relevante, etc.
