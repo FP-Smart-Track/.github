@@ -1,0 +1,117 @@
+name: Sync labels to all org repos
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout .github repo
+        uses: actions/checkout@v4
+
+      - name: Sync labels
+        env:
+          ORG: FP-Smart-Track
+          TOKEN: ${{ secrets.LABEL_SYNC_TOKEN }}
+          LABELS_FILE: labels.yml
+        run: |
+          python3 - << 'PY'
+          import os, json, urllib.request, urllib.error
+          try:
+              import yaml
+          except ImportError:
+              raise SystemExit("PyYAML no está disponible (inesperado en ubuntu-latest).")
+
+          ORG = os.environ["ORG"]
+          TOKEN = os.environ["TOKEN"]
+          LABELS_FILE = os.environ["LABELS_FILE"]
+
+          with open(LABELS_FILE, "r", encoding="utf-8") as f:
+              data = yaml.safe_load(f)
+
+          labels = data.get("labels", [])
+          if not labels:
+              raise SystemExit("labels.yml no contiene labels.")
+
+          headers = {
+              "Authorization": f"Bearer {TOKEN}",
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+              "User-Agent": "fp-smart-track-label-sync"
+          }
+
+          def request(method, url, body=None):
+              req = urllib.request.Request(url, method=method, headers=headers)
+              if body is not None:
+                  req.data = json.dumps(body).encode("utf-8")
+                  req.add_header("Content-Type", "application/json")
+              try:
+                  with urllib.request.urlopen(req) as resp:
+                      return resp.status, json.loads(resp.read().decode("utf-8") or "{}")
+              except urllib.error.HTTPError as e:
+                  msg = e.read().decode("utf-8", errors="ignore")
+                  return e.code, (json.loads(msg) if msg else {"message": str(e)})
+
+          # 1) List repos in org (skip archived/forks)
+          repos = []
+          page = 1
+          while True:
+              url = f"https://api.github.com/orgs/{ORG}/repos?per_page=100&page={page}"
+              status, payload = request("GET", url)
+              if status != 200:
+                  raise SystemExit(f"Error listando repos: {status} {payload}")
+              if not payload:
+                  break
+              for r in payload:
+                  if r.get("archived") or r.get("fork"):
+                      continue
+                  name = r["name"]
+                  repos.append(name)
+              page += 1
+
+          if not repos:
+              raise SystemExit("No se encontraron repos para sincronizar.")
+
+          def upsert_label(repo, label):
+              name = label["name"]
+              color = label.get("color", "ededed")
+              desc = label.get("description", "")
+
+              # Get label
+              url_get = f"https://api.github.com/repos/{ORG}/{repo}/labels/{urllib.parse.quote(name)}"
+              status, payload = request("GET", url_get)
+
+              if status == 200:
+                  # Update
+                  url_patch = f"https://api.github.com/repos/{ORG}/{repo}/labels/{urllib.parse.quote(name)}"
+                  status2, payload2 = request("PATCH", url_patch, {"new_name": name, "color": color, "description": desc})
+                  return status2, payload2
+              elif status == 404:
+                  # Create
+                  url_post = f"https://api.github.com/repos/{ORG}/{repo}/labels"
+                  status2, payload2 = request("POST", url_post, {"name": name, "color": color, "description": desc})
+                  return status2, payload2
+              else:
+                  return status, payload
+
+          failures = []
+          for repo in repos:
+              # Skip the .github repo itself if quieres, pero no hace daño
+              print(f"\n==> Repo: {repo}")
+              for label in labels:
+                  st, pl = upsert_label(repo, label)
+                  if st not in (200, 201):
+                      failures.append((repo, label["name"], st, pl.get("message", str(pl))))
+                      print(f"  [FAIL] {label['name']} -> {st} {pl}")
+                  else:
+                      print(f"  [OK] {label['name']}")
+
+          if failures:
+              print("\nFallos:")
+              for f in failures:
+                  print(" -", f)
+              raise SystemExit(f"Sincronización completada con {len(failures)} fallos.")
+          else:
+              print("\nSincronización completada correctamente.")
+          PY
