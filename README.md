@@ -1,4 +1,4 @@
-# FP Smart Track – Organization Configuration
+# FP Smart Track – Configuración de la Organización
 
 Este repositorio no contiene código del proyecto.
 
