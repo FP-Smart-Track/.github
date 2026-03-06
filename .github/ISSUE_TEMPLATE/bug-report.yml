@@ -28,8 +28,6 @@ body:
         1. Ir a '...'
         2. Hacer clic en '...'
         3. Observar el error
-    validations:
-      required: true
 
   - type: textarea
     id: expected
@@ -37,8 +35,6 @@ body:
       label: Comportamiento esperado
       description: ¿Qué esperabas que ocurriera?
       placeholder: "Debería haberse mostrado..."
-    validations:
-      required: true
 
   - type: textarea
     id: actual
@@ -46,8 +42,6 @@ body:
       label: Comportamiento actual
       description: ¿Qué ocurre realmente?
       placeholder: "En cambio, se muestra..."
-    validations:
-      required: true
 
   - type: textarea
     id: logs
@@ -66,8 +60,6 @@ body:
         - Alto (funcionalidad principal afectada)
         - Medio (funcionalidad secundaria afectada)
         - Bajo (problema estético o menor)
-    validations:
-      required: true
 
   - type: input
     id: environment
@@ -75,8 +67,6 @@ body:
       label: Entorno
       description: Indica el entorno donde ocurre el bug (ej. producción, staging, local).
       placeholder: "Producción / Staging / Local"
-    validations:
-      required: true
 
   - type: textarea
     id: additional

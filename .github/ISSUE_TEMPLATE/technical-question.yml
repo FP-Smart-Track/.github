@@ -10,6 +10,15 @@ body:
       value: |
         Antes de abrir esta issue, asegúrate de haber revisado la documentación existente y las issues anteriores. ¡Gracias!
 
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción de la pregunta
+      description: Formula tu pregunta de forma clara y concisa.
+      placeholder: "¿Cómo funciona...? / ¿Por qué se hace...? / ¿Cuál es la diferencia entre...?"
+    validations:
+      required: true
+
   - type: dropdown
     id: area
     attributes:
@@ -23,17 +32,13 @@ body:
         - Infraestructura / DevOps
         - Seguridad
         - Otro
-    validations:
-      required: true
 
   - type: textarea
     id: question
     attributes:
-      label: Pregunta
-      description: Formula tu pregunta de forma clara y concisa.
-      placeholder: "¿Cómo funciona...? / ¿Por qué se hace...? / ¿Cuál es la diferencia entre...?"
-    validations:
-      required: true
+      label: Pregunta detallada
+      description: Amplía tu pregunta con todo el detalle que necesites.
+      placeholder: "En concreto, me gustaría saber..."
 
   - type: textarea
     id: context

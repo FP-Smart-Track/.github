@@ -10,14 +10,21 @@ body:
       value: |
         Gracias por tomarte el tiempo de proponer una mejora en la API. Por favor, rellena los campos a continuación con el mayor detalle posible.
 
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción de la propuesta
+      description: Resume brevemente en qué consiste esta propuesta de API.
+      placeholder: "Esta propuesta consiste en..."
+    validations:
+      required: true
+
   - type: input
     id: endpoint
     attributes:
       label: Endpoint / Recurso afectado
       description: Indica el endpoint o recurso sobre el que se propone el cambio (ej. `GET /api/v1/users`).
       placeholder: "GET /api/v1/..."
-    validations:
-      required: true
 
   - type: dropdown
     id: method
@@ -31,8 +38,6 @@ body:
         - PATCH
         - DELETE
         - Otro
-    validations:
-      required: true
 
   - type: textarea
     id: motivation
@@ -40,8 +45,6 @@ body:
       label: Motivación / Problema que resuelve
       description: Describe el problema actual o la necesidad que motiva esta propuesta.
       placeholder: "Actualmente no existe un endpoint para..."
-    validations:
-      required: true
 
   - type: textarea
     id: proposal
@@ -54,8 +57,6 @@ body:
           "request": {},
           "response": {}
         }
-    validations:
-      required: true
 
   - type: textarea
     id: alternatives

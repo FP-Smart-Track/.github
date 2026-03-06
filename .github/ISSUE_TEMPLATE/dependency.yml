@@ -1,0 +1,95 @@
+name: 🔗 Dependencia entre equipos
+description: Documenta una dependencia de datos o contrato entre dos equipos o componentes.
+title: "[DEP] "
+labels: ["dependency"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa esta plantilla para documentar una dependencia entre equipos, por ejemplo cuando un componente hijo necesita recibir un dato concreto del componente padre que implementa otro equipo.
+
+  - type: input
+    id: dependency_name
+    attributes:
+      label: Nombre de la dependencia
+      description: Nombre descriptivo de la dependencia (ej. `UserProfile → AvatarComponent`).
+      placeholder: "ComponentePadre → ComponenteHijo"
+
+  - type: dropdown
+    id: dep_type
+    attributes:
+      label: Tipo de dependencia
+      description: ¿Qué tipo de dependencia es?
+      options:
+        - Input / Prop (dato del padre al hijo)
+        - Output / Evento (dato del hijo al padre)
+        - Servicio compartido
+        - Estado global (store)
+        - API / Endpoint
+        - Otro
+
+  - type: input
+    id: provider_team
+    attributes:
+      label: Equipo / Componente que provee el dato
+      description: ¿Quién implementa la parte que debe proporcionar el dato?
+      placeholder: "Equipo A / DashboardComponent / ..."
+
+  - type: input
+    id: consumer_team
+    attributes:
+      label: Equipo / Componente que consume el dato
+      description: ¿Quién implementa la parte que necesita recibir el dato?
+      placeholder: "Equipo B / UserCardComponent / ..."
+
+  - type: textarea
+    id: data_needed
+    attributes:
+      label: Dato(s) necesario(s)
+      description: Describe con detalle qué dato o datos se necesitan (nombre, tipo, formato, ejemplo).
+      render: typescript
+      placeholder: |
+        @Input() userId: string;
+        @Input() userRole: 'admin' | 'user';
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: ¿Por qué se necesita este dato?
+      description: Explica el caso de uso o la funcionalidad que requiere esta dependencia.
+      placeholder: "El componente hijo necesita el ID del usuario para cargar su perfil..."
+
+  - type: textarea
+    id: proposed_contract
+    attributes:
+      label: Contrato propuesto
+      description: Si tienes una propuesta concreta de la interfaz o el contrato, descríbela aquí.
+      render: typescript
+      placeholder: |
+        // Ejemplo de @Input esperado
+        @Input() data: { id: string; role: string };
+
+  - type: dropdown
+    id: blocking
+    attributes:
+      label: ¿Es bloqueante?
+      description: ¿Esta dependencia bloquea el desarrollo del equipo consumidor?
+      options:
+        - "Sí, bloquea completamente"
+        - "Parcialmente (puedo avanzar con mock)"
+        - "No bloquea"
+
+  - type: input
+    id: deadline
+    attributes:
+      label: Fecha límite o sprint objetivo
+      description: ¿Cuándo se necesita que esta dependencia esté resuelta?
+      placeholder: "Sprint 5 / 2026-03-20"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Información adicional
+      description: Links a diseños, diagramas, Figma, documentación relevante, etc.
